@@ -9,3 +9,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Overview
+
+## Simulations
+
+For this project we 
+```{r}
+num_samples <- 1000
+sample_size <- 40
+samples <- matrix(rexp(sample_size * num_samples, 0.2), nrow=num_samples, ncol=sample_size)
+```
+
+## Sample Mean versus Theoretical Mean
+
+## Sample Variance versus Theoretical Variance
+
+## Distribution
