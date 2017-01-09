@@ -2,7 +2,7 @@
 title: "Basic Inferential Data Analysis"
 author: "Daniel Hertenstein"
 date: "January 4, 2017"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
@@ -11,10 +11,49 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Loading the Data
 
+The dataset that we are exploring is in the datasets library. To gain access to the dataset, we simply load the library.
+
+```{r}
+library(datasets)
+```
+
 ## Exploratory Analysis
+
+```{r, fig.height=3, fig.width=4}
+hist(ToothGrowth$len, main='Histogram of Tooth Lengths')
+mean(ToothGrowth$supp == 'VC')
+table(ToothGrowth$dose)
+```
+
+With some simple exploratory analysis, we see: 1) the distribution of tooth lengths is fairly uniform, 2) half of the observations were for each supplement type, and 3) dosages were even divided between three amounts.
 
 ## Data Summary
 
+```{r}
+str(ToothGrowth)
+head(ToothGrowth)
+```
+
+This data frame contains sixty observations of three variables each (a tooth length, the supplement type, and a dose (mg/day))
+
 ## Comparing Tooth Growth by Supp and Dose
 
+We use two sided t-tests to compare the mean tooth length of groupings of observations grouped by supplement type and dosage. Since there are three dosage levels, we must perform three t-tests for dosage to test all combinations.
+
+```{r}
+by_supp <- t.test(ToothGrowth$len ~ ToothGrowth$supp)
+by_supp$p.value
+dose_0.5_1 <- t.test(ToothGrowth$len[ToothGrowth$dose == 0.5], ToothGrowth$len[ToothGrowth$dose == 1])
+dose_0.5_1$p.value
+dose_0.5_1$conf.int
+dose_0.5_2 <- t.test(ToothGrowth$len[ToothGrowth$dose == 0.5], ToothGrowth$len[ToothGrowth$dose == 2])
+dose_0.5_2$p.value
+dose_0.5_2$conf.int
+dose_1_2 <- t.test(ToothGrowth$len[ToothGrowth$dose == 1], ToothGrowth$len[ToothGrowth$dose == 2])
+dose_1_2$p.value
+dose_1_2$conf.int
+```
+
 ## Conclusions and Assumptions
+
+We see that tooth length does not vary significantly between supplement type, but does vary significantly by dosage with higher dosage resulting in higher tooth lengths. For our t-tests, we assumed unequal variances between the subsets of the ToothGrowth data set, and that a signifiance level of 95% was acceptable acceptable.
